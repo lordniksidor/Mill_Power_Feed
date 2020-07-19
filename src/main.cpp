@@ -8,9 +8,11 @@
 
 byte directionPin = 9;
 byte stepPin = 8;
+byte enablePin = 6;
 
-byte buttonCWpin = 10;
-byte buttonCCWpin = 11;
+
+byte buttonCWpin = A2;
+byte buttonCCWpin = A3;
 
 boolean buttonCWpressed = false;
 boolean buttonCCWpressed = false;
@@ -26,23 +28,14 @@ void readButtons() {
     buttonCCWpressed = false;
     buttonCWpressed = false;
    
-    if (digitalRead(buttonCWpin) == LOW) {
+    if (digitalRead(buttonCWpin) == HIGH) {
         buttonCWpressed = true;
     }
-    if (digitalRead(buttonCCWpin) == LOW) {
+    if (digitalRead(buttonCCWpin) == HIGH) {
         buttonCCWpressed = true;
     }
-}
 
-void actOnButtons() {
-    if (buttonCWpressed == true) {
-        digitalWrite(directionPin, LOW);
-        singleStep();
-    }
-    if (buttonCCWpressed == true) {
-        digitalWrite(directionPin, HIGH);
-        singleStep();
-    }
+    millisBetweenSteps = map(analogRead(A0), 0, 1024, 1000, 20);
 }
 
 void singleStep() {
@@ -54,6 +47,17 @@ void singleStep() {
         digitalWrite(stepPin, LOW);
     }
 }
+void actOnButtons() {
+    if (buttonCWpressed == true) {
+        digitalWrite(directionPin, LOW);
+        singleStep();
+    }
+    if (buttonCCWpressed == true) {
+        digitalWrite(directionPin, HIGH);
+        singleStep();
+    }
+}
+
 
 void setup() {
 
