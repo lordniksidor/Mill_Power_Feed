@@ -1,5 +1,4 @@
 # include <Arduino.h>
-
 // testing a stepper motor with a Pololu A4988 driver board or equivalent
 
 // this version uses millis() to manage timing rather than delay()
