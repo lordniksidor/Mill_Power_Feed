@@ -21,28 +21,6 @@ unsigned long curMillis;
 unsigned long prevStepMillis = 0;
 unsigned long millisBetweenSteps = 25; // milliseconds
 
-void setup() {
-
-     Serial.begin(9600);
-     Serial.println("Starting Stepper Demo with millis()");
-
-     pinMode(directionPin, OUTPUT);
-     pinMode(stepPin, OUTPUT);
-     pinMode(ledPin, OUTPUT);
-     
-     pinMode(buttonCWpin, INPUT_PULLUP);
-     pinMode(buttonCCWpin, INPUT_PULLUP);
-     
-}
-
-void loop() {
-   
-    curMillis = millis();
-    readButtons();
-    actOnButtons();
-   
-}
-
 void readButtons() {
    
     buttonCCWpressed = false;
@@ -76,3 +54,26 @@ void singleStep() {
         digitalWrite(stepPin, LOW);
     }
 }
+
+void setup() {
+
+     Serial.begin(9600);
+     Serial.println("Starting Stepper Demo with millis()");
+
+     pinMode(directionPin, OUTPUT);
+     pinMode(stepPin, OUTPUT);
+     pinMode(ledPin, OUTPUT);
+     
+     pinMode(buttonCWpin, INPUT_PULLUP);
+     pinMode(buttonCCWpin, INPUT_PULLUP);
+     
+}
+
+void loop() {
+   
+    curMillis = millis();
+    readButtons();
+    actOnButtons();
+   
+}
+
