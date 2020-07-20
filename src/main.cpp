@@ -58,7 +58,7 @@ void readButtons() {
     
     
 
-    millisBetweenSteps = map(analogRead(A2), 0, 1024, 20, 0);
+    millisBetweenSteps = map(analogRead(A2), 0, 1024, 20000, 1000);
     //Serial.println(millisBetweenSteps);
 }
 
@@ -102,7 +102,7 @@ void setup() {
 
 void loop() {
    
-    curMillis = millis();
+    curMillis = micros();
     readButtons();
     actOnButtons();
    
