@@ -6,13 +6,13 @@
 // and the movement is determined by a pair of momentary push switches
 // press one and it turns CW, press the other and it turns CCW
 
-byte directionPin = 9;
-byte stepPin = 8;
-byte enablePin = 6;
+byte directionPin = 4;
+byte stepPin = 6;
+byte enablePin = 5;
 
 
-byte buttonCWpin = A2;
-byte buttonCCWpin = A3;
+byte buttonCWpin = 3;
+byte buttonCCWpin = 2;
 
 boolean buttonCWpressed = false;
 boolean buttonCCWpressed = false;
@@ -50,11 +50,16 @@ void singleStep() {
 void actOnButtons() {
     if (buttonCWpressed == true) {
         digitalWrite(directionPin, LOW);
+        digitalWrite(enablePin, HIGH);
         singleStep();
     }
     if (buttonCCWpressed == true) {
         digitalWrite(directionPin, HIGH);
+        digitalWrite(enablePin, HIGH);
         singleStep();
+    }
+    if (buttonCCWpressed == false and buttonCWpressed == false){
+        digitalWrite(enablePin, LOW);
     }
 }
 
@@ -80,4 +85,3 @@ void loop() {
     actOnButtons();
    
 }
-
