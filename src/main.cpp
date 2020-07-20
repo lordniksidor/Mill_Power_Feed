@@ -16,6 +16,7 @@ byte buttonCCWpin = 2;
 
 boolean buttonCWpressed = false;
 boolean buttonCCWpressed = false;
+boolean enablestatus = false;
 
 byte ledPin = 13;
 
@@ -30,36 +31,56 @@ void readButtons() {
    
     if (digitalRead(buttonCWpin) == HIGH) {
         buttonCWpressed = true;
+        //enablestatus = true;
     }
     if (digitalRead(buttonCCWpin) == HIGH) {
         buttonCCWpressed = true;
+        //enablestatus = true;
     }
 
-    millisBetweenSteps = map(analogRead(A0), 0, 1024, 1000, 20);
+    if (buttonCCWpressed == true or buttonCWpressed == true)
+    {
+        if (enablestatus == false){
+           digitalWrite(enablePin, HIGH); 
+           enablestatus = true;
+           Serial.println("enabled");
+        }
+        
+    } else
+    {
+        if (enablestatus == true){
+            digitalWrite(enablePin, LOW);
+            enablestatus = false;
+            Serial.println("disabled");
+        }
+        
+    }
+    
+    
+
+    millisBetweenSteps = map(analogRead(A2), 0, 1024, 20, 0);
+    //Serial.println(millisBetweenSteps);
 }
 
 void singleStep() {
     if (curMillis - prevStepMillis >= millisBetweenSteps) {
             // next 2 lines changed 28 Nov 2018
         //prevStepMillis += millisBetweenSteps;
+        //Serial.println("step");
         prevStepMillis = curMillis;
         digitalWrite(stepPin, HIGH);
+        delayMicroseconds(10); 
         digitalWrite(stepPin, LOW);
     }
 }
 void actOnButtons() {
     if (buttonCWpressed == true) {
         digitalWrite(directionPin, LOW);
-        digitalWrite(enablePin, HIGH);
         singleStep();
     }
     if (buttonCCWpressed == true) {
         digitalWrite(directionPin, HIGH);
-        digitalWrite(enablePin, HIGH);
         singleStep();
-    }
-    if (buttonCCWpressed == false and buttonCWpressed == false){
-        digitalWrite(enablePin, LOW);
     }
 }
 
@@ -72,6 +93,7 @@ void setup() {
      pinMode(directionPin, OUTPUT);
      pinMode(stepPin, OUTPUT);
      pinMode(ledPin, OUTPUT);
+     pinMode(enablePin, OUTPUT);
      
      pinMode(buttonCWpin, INPUT_PULLUP);
      pinMode(buttonCCWpin, INPUT_PULLUP);
